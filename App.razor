@@ -1,0 +1,81 @@
+﻿<div style="padding:10px;">
+
+    <IgbLegend Name="Legend"
+               @ref="legend">
+
+    </IgbLegend>
+
+    <IgbDataChart Height="320px" Width="320px" Name="chart" @ref="chart"
+                  ComputedPlotAreaMarginMode="ComputedPlotAreaMarginMode.Series">
+
+
+        <IgbNumericXAxis Name="xAxis"
+                         MinimumValue="0"
+                         MaximumValue="10" />
+
+        <IgbNumericYAxis Name="yAxis"
+                         MinimumValue="-5"
+                         MaximumValue="5" />
+
+
+        <IgbScatterSeries DataSource="@DataSourceA"
+                          Name="Scatter"
+                          XMemberPath="XValue"
+                          YMemberPath="YValue"
+                          XAxisName="xAxis"
+                          YAxisName="yAxis"
+                          Title="散布図" />
+
+        <IgbScatterLineSeries DataSource="@DataSourceB"
+                          Name="ScatterLine"
+                          XMemberPath="XValue"
+                          YMemberPath="YValue"
+                          XAxisName="xAxis"
+                          YAxisName="yAxis"
+                          Title="折れ線" />
+    </IgbDataChart>
+
+</div>
+
+
+@code {
+    private IgbLegend legend = new();
+    private IgbDataChart chart = new();
+    private Action? BindElements { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var legend = this.legend;
+        var chart = this.chart;
+            chart.Legend = this.legend;
+    }
+
+
+    public record SampleDataType(string Name, double XValue, double YValue);
+
+    public IEnumerable<SampleDataType> DataSourceA { get; } = new SampleDataType[]
+    {
+      new (Name: "item1", XValue: 0, YValue: 5),
+      new (Name: "item2", XValue: 2, YValue: 2),
+      new (Name: "item3", XValue: 3, YValue: 3),
+      new (Name: "item4", XValue: 5, YValue: 5),
+      new (Name: "item5", XValue: 7, YValue: 4),
+      new (Name: "item6", XValue: 9, YValue: 3),
+      new (Name: "item7", XValue: 10, YValue: 5),
+
+    };
+
+    public IEnumerable<SampleDataType> DataSourceB { get; } = new SampleDataType[]
+    {
+      new (Name: "item1", XValue: 0,  YValue: -2),
+      new (Name: "item2", XValue: 1,  YValue: -5),
+      new (Name: "item3", XValue: 2,  YValue: -3),
+      new (Name: "item4", XValue: 3,  YValue: -2),
+      new (Name: "item5", XValue: 4,  YValue: -1),
+      new (Name: "item6", XValue: 5,  YValue: -5),
+      new (Name: "item7", XValue: 6,  YValue: -4.5),
+      new (Name: "item8", XValue: 7,  YValue: -4),
+      new (Name: "item9", XValue: 8,  YValue: -3),
+      new (Name: "item10", XValue:10, YValue: -5),
+    };
+}
